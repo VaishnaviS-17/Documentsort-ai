@@ -1,0 +1,7 @@
+venv/
+data/
+*.pth
+__pycache__/
+.ipynb_checkpoints/
+_tmp_orig.jpg
+_tmp_cam.jpg
