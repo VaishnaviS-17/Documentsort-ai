@@ -80,7 +80,7 @@ def overlay_heatmap(original_image_pil, heatmap, alpha=0.5):
     Uses PIL/NumPy/Matplotlib only -- no OpenCV dependency needed.
     """
     from PIL import Image
-    import matplotlib.cm as cm
+    import matplotlib
 
     original = np.array(original_image_pil.convert('RGB'))
 
@@ -88,7 +88,7 @@ def overlay_heatmap(original_image_pil, heatmap, alpha=0.5):
     heatmap_resized = heatmap_img.resize((original.shape[1], original.shape[0]), Image.BILINEAR)
     heatmap_array = np.array(heatmap_resized) / 255.0
 
-    colormap = cm.get_cmap('jet')
+    colormap = matplotlib.colormaps['jet']
     heatmap_colored = colormap(heatmap_array)[:, :, :3]
     heatmap_colored = np.uint8(255 * heatmap_colored)
 
