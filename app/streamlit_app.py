@@ -5,6 +5,8 @@ import sys
 import os
 from datetime import datetime
 from fpdf import FPDF
+from huggingface_hub import hf_hub_download
+HF_REPO_ID = "vs-edu12/docusort-ai"
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
 
@@ -86,8 +88,9 @@ st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 
 @st.cache_resource
 def load_custom_cnn():
+    weights_path = hf_hub_download(repo_id=HF_REPO_ID, filename="best_custom_cnn.pth")
     model = DocumentCNN(num_classes=10)
-    model.load_state_dict(torch.load('../saved_models/best_custom_cnn.pth', map_location=DEVICE))
+    model.load_state_dict(torch.load(weights_path, map_location=DEVICE))
     model = model.to(DEVICE)
     model.eval()
     return model
@@ -95,8 +98,9 @@ def load_custom_cnn():
 
 @st.cache_resource
 def load_resnet18():
+    weights_path = hf_hub_download(repo_id=HF_REPO_ID, filename="best_resnet18.pth")
     model = get_resnet18_model(num_classes=10, freeze_backbone=True)
-    model.load_state_dict(torch.load('../saved_models/best_resnet18.pth', map_location=DEVICE))
+    model.load_state_dict(torch.load(weights_path, map_location=DEVICE))
     model = model.to(DEVICE)
     model.eval()
     return model
