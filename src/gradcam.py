@@ -2,8 +2,6 @@ import torch
 import torch.nn.functional as F
 import numpy as np
 import matplotlib.pyplot as plt
-import cv2
-
 
 class GradCAM:
     """
@@ -79,11 +77,20 @@ def overlay_heatmap(original_image_pil, heatmap, alpha=0.5):
     """
     Resizes the heatmap to match the original image size and overlays it
     as a color heatmap on top of the (grayscale) original image.
+    Uses PIL/NumPy/Matplotlib only -- no OpenCV dependency needed.
     """
+    from PIL import Image
+    import matplotlib.cm as cm
+
     original = np.array(original_image_pil.convert('RGB'))
-    heatmap_resized = cv2.resize(heatmap, (original.shape[1], original.shape[0]))
-    heatmap_colored = cv2.applyColorMap(np.uint8(255 * heatmap_resized), cv2.COLORMAP_JET)
-    heatmap_colored = cv2.cvtColor(heatmap_colored, cv2.COLOR_BGR2RGB)
+
+    heatmap_img = Image.fromarray(np.uint8(255 * heatmap))
+    heatmap_resized = heatmap_img.resize((original.shape[1], original.shape[0]), Image.BILINEAR)
+    heatmap_array = np.array(heatmap_resized) / 255.0
+
+    colormap = cm.get_cmap('jet')
+    heatmap_colored = colormap(heatmap_array)[:, :, :3]
+    heatmap_colored = np.uint8(255 * heatmap_colored)
 
     overlayed = np.uint8(original * (1 - alpha) + heatmap_colored * alpha)
     return overlayed
