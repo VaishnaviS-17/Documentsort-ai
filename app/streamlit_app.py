@@ -34,15 +34,23 @@ html, body, [class*="css"] { font-family: 'Segoe UI', Helvetica, Arial, sans-ser
 .block-container { padding: 1.5rem 3rem 3rem 3rem; max-width: 100%; }
 
 .navbar {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 1rem 0 1.2rem 0; margin-bottom: 3rem;
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+    padding: 1rem 0 1.2rem 0; margin-bottom: 3rem; row-gap: 0.6rem;
 }
-.navbar-logo { font-size: 1.8rem; font-weight: 700; color: #f1f3f7; letter-spacing: -0.02em; }
+.navbar-logo { font-size: 1.8rem; font-weight: 700; color: #f1f3f7; letter-spacing: -0.02em; white-space: nowrap; }
+.navbar-links { display: flex; flex-wrap: wrap; gap: 1.2rem; }
 .navbar-links a {
-    color: #97a1b3; font-size: 1.3rem; text-decoration: none; margin-left: 1.8rem;
-    transition: color 0.15s ease;
+    color: #97a1b3; font-size: 1.3rem; text-decoration: none; 
+    transition: color 0.15s ease; white-space: nowrap;
 }
 .navbar-links a:hover { color: #2dd4bf; }
+
+@media (max-width: 640px) {
+    .navbar { flex-direction: column; align-items: center; text-align: center; }
+    .navbar-logo { font-size: 1.4rem; margin-bottom: 0.3rem; }
+    .navbar-links { justify-content: center; gap: 1rem; }
+    .navbar-links a { font-size: 1rem; }
+}
 
 .hero-title { font-size: 2.6rem; font-weight: 800; color: #f1f3f7; letter-spacing: -0.03em; margin-bottom: 0.7rem; text-align: center; }
 .hero-subtitle { font-size: 1.2rem; color: #8891a3; max-width: 660px; margin: 0 auto; line-height: 1.6; text-align: center; }
